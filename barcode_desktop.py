@@ -21,10 +21,16 @@ pyzbar = None
 
 try:
     from pyzbar import pyzbar
+    # Test if pyzbar is working properly
+    import numpy as np
+    test_array = np.zeros((100, 100), dtype=np.uint8)
+    pyzbar.decode(test_array)  # Test decode functionality
     PYZBAR_AVAILABLE = True
-except ImportError:
+    print("pyzbar library loaded successfully.")
+except (ImportError, Exception) as e:
     PYZBAR_AVAILABLE = False
-    print("Using OpenCV-based barcode detection method.")
+    pyzbar = None
+    print(f"Using OpenCV-based barcode detection method. Reason: {e}")
 
 class BarcodeReaderApp:
     def __init__(self, root):
