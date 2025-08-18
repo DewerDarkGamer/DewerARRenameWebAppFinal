@@ -19,11 +19,7 @@ a = Analysis(
         'cv2',
         'numpy',
         'PIL',
-        'PIL.Image',
-        'pyzbar',
-        'pyzbar.pyzbar',
-        'pyzbar.wrapper',
-        'pyzbar.zbar_library'
+        'PIL.Image'
     ],
     hookspath=[],
     hooksconfig={},
@@ -46,12 +42,8 @@ a = Analysis(
     noarchive=False,
 )
 
-# Collect all pyzbar data and binaries
-from PyInstaller.utils.hooks import collect_all
-datas, binaries, hiddenimports = collect_all('pyzbar')
-a.datas += datas
-a.binaries += binaries
-a.hiddenimports += hiddenimports
+# Skip pyzbar collection to avoid DLL issues
+# Program will use OpenCV fallback method instead
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
