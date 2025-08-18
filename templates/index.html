@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Reader - อ่าน Barcode และเปลี่ยนชื่อไฟล์</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <!-- Header -->
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-barcode text-info me-3"></i>
+                        Barcode Reader
+                    </h1>
+                    <p class="lead">อัปโหลดภาพ JPG เพื่ออ่าน Barcode และเปลี่ยนชื่อไฟล์อัตโนมัติ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="row">
+                    <div class="col-12">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'warning' if category == 'warning' else 'success' }} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'exclamation-circle' if category == 'warning' else 'check-circle' }} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload Form -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-upload me-2"></i>
+                            เลือกไฟล์ภาพ
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('upload_files') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+                            <div class="mb-3">
+                                <label for="files" class="form-label">เลือกไฟล์ภาพ JPG (สามารถเลือกหลายไฟล์)</label>
+                                <input type="file" class="form-control" name="files" id="files" multiple accept=".jpg,.jpeg" required>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    รองรับไฟล์ .jpg และ .jpeg เท่านั้น (ขนาดไม่เกิน 16 MB ต่อไฟล์)
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg" id="uploadBtn">
+                                    <i class="fas fa-cogs me-2"></i>
+                                    ประมวลผลไฟล์
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        {% if results %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            ผลการประมวลผล
+                        </h5>
+                        <div>
+                            {% set success_files = results|selectattr("status", "equalto", "success")|list %}
+                            {% if success_files|length > 1 %}
+                                <a href="{{ url_for('download_all') }}" class="btn btn-success btn-sm me-2">
+                                    <i class="fas fa-download me-1"></i>
+                                    ดาวน์โหลดทั้งหมด (ZIP)
+                                </a>
+                            {% endif %}
+                            <a href="{{ url_for('clear_files') }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('คุณต้องการลบไฟล์ทั้งหมดหรือไม่?')">
+                                <i class="fas fa-trash me-1"></i>
+                                ล้างไฟล์
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">ชื่อไฟล์เดิม</th>
+                                        <th width="20%">Barcode ที่อ่านได้</th>
+                                        <th width="25%">ชื่อไฟล์ใหม่</th>
+                                        <th width="15%">สถานะ</th>
+                                        <th width="15%">การดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in results %}
+                                    <tr>
+                                        <td>
+                                            <i class="fas fa-file-image text-info me-2"></i>
+                                            {{ result.original_filename }}
+                                        </td>
+                                        <td>
+                                            {% if result.barcode_text %}
+                                                <code class="text-success">{{ result.barcode_text }}</code>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.new_filename %}
+                                                <strong class="text-success">{{ result.new_filename }}</strong>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.status == 'success' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>สำเร็จ
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>ล้มเหลว
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.status == 'success' %}
+                                                <a href="{{ url_for('download_file', filename=result.new_filename) }}" class="btn btn-outline-success btn-sm">
+                                                    <i class="fas fa-download me-1"></i>ดาวน์โหลด
+                                                </a>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if result.error %}
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="alert alert-danger alert-sm mb-0">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                <small>{{ result.error }}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Usage Instructions -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-question-circle me-2"></i>
+                            วิธีการใช้งาน
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ol>
+                            <li>เลือกไฟล์ภาพ JPG ที่มี barcode (สามารถเลือกหลายไฟล์พร้อมกัน)</li>
+                            <li>คลิก "ประมวลผลไฟล์" เพื่อให้ระบบอ่าน barcode จากภาพ</li>
+                            <li>ระบบจะแสดงผลการอ่าน barcode และชื่อไฟล์ใหม่</li>
+                            <li>ดาวน์โหลดไฟล์ที่เปลี่ยนชื่อแล้วทีละไฟล์ หรือดาวน์โหลดทั้งหมดเป็น ZIP</li>
+                        </ol>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            <strong>เคล็ดลับ:</strong> 
+                            สำหรับผลลัพธ์ที่ดีที่สุด ควรใช้ภาพที่มี barcode ชัดเจน และมีความละเอียดเพียงพอ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">กำลังประมวลผล...</span>
+                    </div>
+                    <h5>กำลังประมวลผลไฟล์...</h5>
+                    <p class="text-muted mb-0">กรุณารอสักครู่</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
