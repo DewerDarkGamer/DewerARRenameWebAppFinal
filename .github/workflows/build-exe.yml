@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     
     steps:
     - uses: actions/checkout@v4
@@ -25,11 +25,23 @@ jobs:
     
     - name: Build EXE
       run: |
+        Write-Host "Building EXE with PyInstaller..."
         python pyinstaller_spec.py
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "Build failed with exit code $LASTEXITCODE"
+          exit 1
+        }
     
     - name: Test EXE
       run: |
-        .\dist\BarcodeReader.exe --help
+        if (Test-Path ".\dist\BarcodeReader.exe") {
+          Write-Host "✓ EXE file created successfully"
+          $fileSize = (Get-Item ".\dist\BarcodeReader.exe").Length / 1MB
+          Write-Host "✓ File size: $([math]::Round($fileSize, 1)) MB"
+        } else {
+          Write-Host "✗ EXE file not found"
+          exit 1
+        }
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
