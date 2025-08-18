@@ -35,11 +35,11 @@ jobs:
     - name: Test EXE
       run: |
         if (Test-Path ".\dist\BarcodeReader.exe") {
-          Write-Host "✓ EXE file created successfully"
+          Write-Host "[SUCCESS] EXE file created successfully"
           $fileSize = (Get-Item ".\dist\BarcodeReader.exe").Length / 1MB
-          Write-Host "✓ File size: $([math]::Round($fileSize, 1)) MB"
+          Write-Host "[INFO] File size: $([math]::Round($fileSize, 1)) MB"
         } else {
-          Write-Host "✗ EXE file not found"
+          Write-Host "[ERROR] EXE file not found"
           exit 1
         }
     
