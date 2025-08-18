@@ -59,10 +59,10 @@ def build_exe():
         # Check if build was successful
         exe_path = Path("dist") / f"{exe_name}.exe"
         if exe_path.exists():
-            print(f"✓ Build successful! EXE created at: {exe_path}")
-            print(f"✓ File size: {exe_path.stat().st_size / (1024*1024):.1f} MB")
+            print(f"[SUCCESS] Build successful! EXE created at: {exe_path}")
+            print(f"[INFO] File size: {exe_path.stat().st_size / (1024*1024):.1f} MB")
         else:
-            print("✗ Build failed - EXE not found")
+            print("[ERROR] Build failed - EXE not found")
             return False
             
         return True
