@@ -1,0 +1,62 @@
+name: Build Windows EXE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements_desktop.txt
+    
+    - name: Build EXE
+      run: |
+        python pyinstaller_spec.py
+    
+    - name: Test EXE
+      run: |
+        .\dist\BarcodeReader.exe --help
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: BarcodeReader-Windows
+        path: dist/BarcodeReader.exe
+    
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/BarcodeReader.exe
+        body: |
+          ## Barcode Reader v${{ github.ref_name }}
+          
+          ### ดาวน์โหลด
+          - **BarcodeReader.exe** - โปรแกรม Desktop สำหรับ Windows
+          
+          ### การใช้งาน
+          1. ดาวน์โหลดไฟล์ `BarcodeReader.exe`
+          2. เรียกใช้โปรแกรมโดยไม่ต้องติดตั้ง
+          3. เลือกไฟล์หรือโฟลเดอร์ที่ต้องการประมวลผล
+          
+          ### คุณสมบัติ
+          - อ่าน Barcode จากไฟล์ภาพ JPG/JPEG
+          - เปลี่ยนชื่อไฟล์อัตโนมัติ
+          - รองรับประมวลผลหลายไฟล์และทั้งโฟลเดอร์
+          - ใช้งานได้โดยไม่ต้องติดตั้งโปรแกรมเพิ่มเติม
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
