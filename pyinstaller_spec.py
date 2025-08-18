@@ -38,6 +38,11 @@ def build_exe():
             "--hidden-import=PIL.Image",
             "--hidden-import=pyzbar",
             "--hidden-import=pyzbar.pyzbar",
+            "--hidden-import=pyzbar.wrapper",
+            "--hidden-import=pyzbar.zbar_library",
+            "--collect-all=pyzbar",
+            "--collect-binaries=pyzbar",
+            "--collect-data=pyzbar",
             "--exclude-module=matplotlib",
             "--exclude-module=pytest",
             "--exclude-module=setuptools",
@@ -53,8 +58,15 @@ def build_exe():
         print("Building EXE with PyInstaller...")
         print(f"Command: pyinstaller {' '.join(args)}")
         
-        # Run PyInstaller
-        PyInstaller.__main__.run(args)
+        # Check if custom spec file exists
+        spec_file = "BarcodeReader.spec"
+        if os.path.exists(spec_file):
+            print(f"Using custom spec file: {spec_file}")
+            PyInstaller.__main__.run([spec_file])
+        else:
+            print("Using command line arguments")
+            # Run PyInstaller
+            PyInstaller.__main__.run(args)
         
         # Check if build was successful
         exe_path = Path("dist") / f"{exe_name}.exe"
