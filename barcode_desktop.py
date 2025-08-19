@@ -15,38 +15,36 @@ import threading
 from pathlib import Path
 import numpy as np
 
-# Try to import pyzbar, fallback to OpenCV if not available
+# Global variables for pyzbar availability
 PYZBAR_AVAILABLE = False
 pyzbar = None
 
-def test_pyzbar():
-    """Test if pyzbar is working properly"""
-    try:
-        if pyzbar is None:
-            return False
-        # Simple test with small array
-        test_array = np.zeros((50, 50), dtype=np.uint8)
-        pyzbar.decode(test_array)
-        return True
-    except:
-        return False
-
-try:
-    # Try importing pyzbar
-    from pyzbar import pyzbar as pyzbar_module
-    pyzbar = pyzbar_module
+def init_pyzbar():
+    """Initialize pyzbar safely"""
+    global PYZBAR_AVAILABLE, pyzbar
     
-    # Test if it works
-    if test_pyzbar():
+    if PYZBAR_AVAILABLE is not False:  # Already initialized
+        return PYZBAR_AVAILABLE
+    
+    try:
+        # Try importing pyzbar only when needed
+        from pyzbar import pyzbar as pyzbar_module
+        
+        # Test if it works with a simple decode
+        test_array = np.zeros((50, 50), dtype=np.uint8)
+        pyzbar_module.decode(test_array)
+        
+        # If we get here, pyzbar works
+        pyzbar = pyzbar_module
         PYZBAR_AVAILABLE = True
         print("pyzbar library loaded successfully.")
-    else:
-        raise Exception("pyzbar test failed")
+        return True
         
-except Exception as e:
-    PYZBAR_AVAILABLE = False
-    pyzbar = None
-    print(f"Using OpenCV-based barcode detection method. Reason: {type(e).__name__}: {str(e)[:100]}")
+    except Exception as e:
+        PYZBAR_AVAILABLE = False
+        pyzbar = None
+        print(f"Using OpenCV-based barcode detection method. Reason: {type(e).__name__}: {str(e)[:100]}")
+        return False
 
 class BarcodeReaderApp:
     def __init__(self, root):
@@ -336,7 +334,9 @@ class BarcodeReaderApp:
             if image is None:
                 return None, "ไม่สามารถอ่านไฟล์ภาพได้"
             
-            if PYZBAR_AVAILABLE:
+            # Try to use pyzbar if available
+            if init_pyzbar():
+                global pyzbar
                 # Convert to RGB (pyzbar expects RGB)
                 rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 
@@ -356,9 +356,10 @@ class BarcodeReaderApp:
                     
                     for method in methods:
                         processed = method(gray)
-                        barcodes = pyzbar.decode(processed)
-                        if barcodes:
-                            break
+                        if pyzbar:  # Check if pyzbar is still available
+                            barcodes = pyzbar.decode(processed)
+                            if barcodes:
+                                break
                 
                 if barcodes:
                     # Return the first barcode found
