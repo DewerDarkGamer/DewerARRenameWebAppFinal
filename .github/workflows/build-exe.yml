@@ -18,10 +18,11 @@ jobs:
       with:
         python-version: '3.11'
     
-    - name: Install dependencies
+    - name: Install dependencies (excluding pyzbar)
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements_desktop.txt
+        pip install -r requirements_github.txt
+        Write-Host "Dependencies installed (pyzbar excluded)"
     
     - name: Build EXE
       run: |
@@ -34,9 +35,9 @@ jobs:
     
     - name: Test EXE
       run: |
-        if (Test-Path ".\dist\BarcodeReader.exe") {
+        if (Test-Path ".\dist\BarcodeReader_Final.exe") {
           Write-Host "[SUCCESS] EXE file created successfully"
-          $fileSize = (Get-Item ".\dist\BarcodeReader.exe").Length / 1MB
+          $fileSize = (Get-Item ".\dist\BarcodeReader_Final.exe").Length / 1MB
           Write-Host "[INFO] File size: $([math]::Round($fileSize, 1)) MB"
         } else {
           Write-Host "[ERROR] EXE file not found"
@@ -47,21 +48,21 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: BarcodeReader-Windows
-        path: dist/BarcodeReader.exe
+        path: dist/BarcodeReader_Final.exe
     
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
-        files: dist/BarcodeReader.exe
+        files: dist/BarcodeReader_Final.exe
         body: |
           ## Barcode Reader v${{ github.ref_name }}
           
           ### ดาวน์โหลด
-          - **BarcodeReader.exe** - โปรแกรม Desktop สำหรับ Windows
+          - **BarcodeReader_Final.exe** - โปรแกรม Desktop สำหรับ Windows (ไม่ต้องใช้ pyzbar)
           
           ### การใช้งาน
-          1. ดาวน์โหลดไฟล์ `BarcodeReader.exe`
+          1. ดาวน์โหลดไฟล์ `BarcodeReader_Final.exe`
           2. เรียกใช้โปรแกรมโดยไม่ต้องติดตั้ง
           3. เลือกไฟล์หรือโฟลเดอร์ที่ต้องการประมวลผล
           
