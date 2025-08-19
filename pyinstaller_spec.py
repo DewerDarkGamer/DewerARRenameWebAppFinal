@@ -18,6 +18,11 @@ def build_exe():
         script_name = "barcode_desktop_final.py"
         exe_name = "BarcodeReader_Final"
         
+        # Ensure we're using the correct file
+        if not os.path.exists(script_name):
+            print(f"Error: {script_name} not found!")
+            return False
+        
         # PyInstaller arguments
         args = [
             script_name,
