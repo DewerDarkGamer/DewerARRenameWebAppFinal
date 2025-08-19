@@ -15,8 +15,8 @@ def build_exe():
         import PyInstaller.__main__
         
         # Define build parameters
-        script_name = "barcode_reader_safe.py"
-        exe_name = "BarcodeReader"
+        script_name = "barcode_desktop_final.py"
+        exe_name = "BarcodeReader_Final"
         
         # PyInstaller arguments
         args = [
@@ -53,7 +53,7 @@ def build_exe():
         print(f"Command: pyinstaller {' '.join(args)}")
         
         # Check if custom spec file exists
-        spec_file = "BarcodeReader.spec"
+        spec_file = "BarcodeReader_Final.spec"
         if os.path.exists(spec_file):
             print(f"Using custom spec file: {spec_file}")
             PyInstaller.__main__.run([spec_file])
