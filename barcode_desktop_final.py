@@ -15,6 +15,7 @@ from tkinter import filedialog, messagebox, ttk
 from tkinter.scrolledtext import ScrolledText
 import threading
 from pathlib import Path
+from pyzxing import BarCodeReader
 import numpy as np
 
 print("Barcode Reader - OpenCV Only Mode (No pyzbar)")
