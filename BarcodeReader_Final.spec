@@ -1,5 +1,7 @@
 
 # -*- mode: python ; coding: utf-8 -*-
+import sys
+from pathlib import Path
 
 block_cipher = None
 
@@ -24,9 +26,6 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[
         'pyzbar',
-        'pyzbar.pyzbar',
-        'pyzbar.wrapper',
-        'pyzbar.zbar_library',
         'matplotlib',
         'pytest', 
         'setuptools',
@@ -36,8 +35,7 @@ a = Analysis(
         'http',
         'urllib3',
         'xml',
-        'unittest',
-        'zbar'
+        'unittest'
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
