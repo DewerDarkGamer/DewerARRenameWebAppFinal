@@ -1,0 +1,44 @@
+Traceback (most recent call last):
+  File "PyInstaller\loader\pyimod03_ctypes.py", line 53, in __init__
+  File "ctypes\__init__.py", line 376, in __init__
+FileNotFoundError: Could not find module 'libiconv.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "pyzbar\zbar_library.py", line 58, in load
+  File "pyzbar\zbar_library.py", line 50, in load_objects
+  File "pyzbar\zbar_library.py", line 51, in <listcomp>
+  File "ctypes\__init__.py", line 454, in LoadLibrary
+  File "PyInstaller\loader\pyimod03_ctypes.py", line 55, in __init__
+pyimod03_ctypes.install.<locals>.PyInstallerImportError: Failed to load dynlib/dll 'libiconv.dll'. Most likely this dynlib/dll was not found when the application was frozen.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "PyInstaller\loader\pyimod03_ctypes.py", line 53, in __init__
+  File "ctypes\__init__.py", line 376, in __init__
+FileNotFoundError: Could not find module 'C:\Users\bpc8392\AppData\Local\Temp\_MEI328922\pyzbar\libiconv.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "barcode_desktop.py", line 23, in <module>
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 457, in exec_module
+  File "pyzbar\pyzbar.py", line 7, in <module>
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 457, in exec_module
+  File "pyzbar\wrapper.py", line 151, in <module>
+  File "pyzbar\wrapper.py", line 148, in zbar_function
+  File "pyzbar\wrapper.py", line 127, in load_libzbar
+  File "pyzbar\zbar_library.py", line 60, in load
+  File "pyzbar\zbar_library.py", line 50, in load_objects
+  File "pyzbar\zbar_library.py", line 51, in <listcomp>
+  File "ctypes\__init__.py", line 454, in LoadLibrary
+  File "PyInstaller\loader\pyimod03_ctypes.py", line 55, in __init__
+pyimod03_ctypes.install.<locals>.PyInstallerImportError: Failed to load dynlib/dll 'C:\\Users\\bpc8392\\AppData\\Local\\Temp\\_MEI328922\\pyzbar\\libiconv.dll'. Most likely this dynlib/dll was not found when the application was frozen.

@@ -1,0 +1,102 @@
+Run Write-Host "Building EXE with PyInstaller..."
+  Write-Host "Building EXE with PyInstaller..."
+  python pyinstaller_spec.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "Build failed with exit code $LASTEXITCODE"
+    exit 1
+  }
+  shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+  env:
+    pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+    PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+    Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+    Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+    Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+Building EXE with PyInstaller...
+531 INFO: PyInstaller: 6.15.0, contrib hooks: 2025.8
+531 INFO: Python: 3.11.9
+547 INFO: Platform: Windows-10-10.0.20348-SP0
+547 INFO: Python environment: C:\hostedtoolcache\windows\Python\3.11.9\x64
+547 INFO: wrote D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\BarcodeReader.spec
+547 INFO: Removing temporary files and cleaning cache in C:\Users\runneradmin\AppData\Local\pyinstaller
+547 INFO: Module search paths (PYTHONPATH):
+['D:\\a\\DewerARRenameWebAppFinal\\DewerARRenameWebAppFinal',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\python311.zip',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\DLLs',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64',
+ 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages',
+ 'D:\\a\\DewerARRenameWebAppFinal\\DewerARRenameWebAppFinal']
+875 INFO: Appending 'datas' from .spec
+875 INFO: checking Analysis
+875 INFO: Building Analysis because Analysis-00.toc is non existent
+875 INFO: Running Analysis Analysis-00.toc
+875 INFO: Target bytecode optimization level: 0
+875 INFO: Initializing module dependency graph...
+875 INFO: Initializing module graph hook caches...
+890 INFO: Analyzing modules for base_library.zip ...
+1626 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+1907 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+3643 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+4972 INFO: Caching module dependency graph...
+5003 INFO: Looking for Python shared library...
+5081 INFO: Using Python shared library: C:\hostedtoolcache\windows\Python\3.11.9\x64\python311.dll
+5081 INFO: Analyzing D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\barcode_desktop.py
+5097 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+5659 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+5941 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6113 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+6974 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7333 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7451 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+7991 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+7991 INFO: SetuptoolsInfo: initializing cached setuptools info...
+9706 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+9706 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+10842 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+10983 INFO: Analyzing hidden import 'PIL'
+10983 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+10983 INFO: Analyzing hidden import 'PIL.Image'
+11077 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+11485 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+11688 INFO: Processing module hooks (post-graph stage)...
+11954 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+12001 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks'
+12001 INFO: Performing binary vs. data reclassification (930 entries)
+13485 INFO: Looking for ctypes DLLs
+13548 INFO: Analyzing run-time hooks ...
+13548 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+13548 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+13548 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+13548 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+13579 INFO: Creating base_library.zip...
+13626 INFO: Looking for dynamic libraries
+13923 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\numpy.libs', 'C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
+13923 INFO: Extra DLL search directories (PATH): ['C:\\hostedtoolcache\\windows\\Python\\3.11.9\\x64\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
+14986 INFO: Warnings written to D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\build\BarcodeReader\warn-BarcodeReader.txt
+15017 INFO: Graph cross-reference written to D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\build\BarcodeReader\xref-BarcodeReader.html
+15064 INFO: checking PYZ
+15064 INFO: Building PYZ because PYZ-00.toc is non existent
+15064 INFO: Building PYZ (ZlibArchive) D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\build\BarcodeReader\PYZ-00.pyz
+15705 INFO: Building PYZ (ZlibArchive) D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\build\BarcodeReader\PYZ-00.pyz completed successfully.
+15736 INFO: checking PKG
+15736 INFO: Building PKG because PKG-00.toc is non existent
+15736 INFO: Building PKG (CArchive) BarcodeReader.pkg
+33522 INFO: Building PKG (CArchive) BarcodeReader.pkg completed successfully.
+33537 INFO: Bootloader C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+33537 INFO: checking EXE
+33537 INFO: Building EXE because EXE-00.toc is non existent
+33537 INFO: Building EXE from EXE-00.toc
+33537 INFO: Copying bootloader EXE to D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\dist\BarcodeReader.exe
+33537 INFO: Copying icon to EXE
+33537 INFO: Copying 0 resources to EXE
+33537 INFO: Embedding manifest in EXE
+33553 INFO: Appending PKG archive to EXE
+33584 INFO: Fixing EXE headers
+33865 INFO: Building EXE from EXE-00.toc completed successfully.
+33881 INFO: Build complete! The results are available in: D:\a\DewerARRenameWebAppFinal\DewerARRenameWebAppFinal\dist
+Building EXE with PyInstaller...
+Command: pyinstaller barcode_desktop.py --name=BarcodeReader --onefile --windowed --clean --noconfirm --add-data=README.md;. --hidden-import=tkinter --hidden-import=tkinter.filedialog --hidden-import=tkinter.messagebox --hidden-import=tkinter.ttk --hidden-import=tkinter.scrolledtext --hidden-import=cv2 --hidden-import=numpy --hidden-import=PIL --hidden-import=PIL.Image --hidden-import=pyzbar --hidden-import=pyzbar.pyzbar --exclude-module=matplotlib --exclude-module=pytest --exclude-module=setuptools --exclude-module=distutils --exclude-module=email --exclude-module=html --exclude-module=http --exclude-module=urllib3 --exclude-module=xml --exclude-module=unittest
+Error during build: 'charmap' codec can't encode character '\u2713' in position 0: character maps to <undefined>
+Build failed with exit code 1
+Error: Process completed with exit code 1.
