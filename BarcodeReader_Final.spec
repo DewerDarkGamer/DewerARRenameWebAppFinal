@@ -26,6 +26,11 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[
         'pyzbar',
+        'pyzbar.pyzbar',
+        'pyzbar.wrapper',
+        'pyzbar.zbar_library',
+        'zbar',
+        'libzbar',
         'matplotlib',
         'pytest', 
         'setuptools',
@@ -42,6 +47,14 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
+
+# Remove any pyzbar related modules from pure python modules
+if hasattr(a, 'pure'):
+    a.pure = [x for x in a.pure if not any(
+        pyzbar_module in str(x) for pyzbar_module in [
+            'pyzbar', 'zbar', 'libzbar'
+        ]
+    )]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
