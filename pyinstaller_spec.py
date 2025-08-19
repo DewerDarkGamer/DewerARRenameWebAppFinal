@@ -15,7 +15,7 @@ def build_exe():
         import PyInstaller.__main__
         
         # Define build parameters
-        script_name = "barcode_desktop.py"
+        script_name = "barcode_reader_safe.py"
         exe_name = "BarcodeReader"
         
         # PyInstaller arguments
