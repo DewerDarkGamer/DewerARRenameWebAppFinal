@@ -36,7 +36,8 @@ def build_exe():
             "--hidden-import=numpy",
             "--hidden-import=PIL",
             "--hidden-import=PIL.Image",
-            
+            "--exclude-module=pyzbar",
+            "--exclude-module=zbar",
             "--exclude-module=matplotlib",
             "--exclude-module=pytest",
             "--exclude-module=setuptools",
